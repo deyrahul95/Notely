@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Notely.Shared.DTOs;
 using Notes.Api.Data;
 
 namespace Notes.Api.Features.CreateNote;
@@ -12,15 +13,11 @@ internal static class CreateNoteEndpoint
         string Content,
         DateTime CreatedAtUtc,
         List<TagResponse> Tags);
-    public record TagResponse(
-        Guid Id,
-        string Name,
-        string Color,
-        DateTime CreatedAtUtc);
 
     public static async Task<IResult> Execute(
         [FromBody] CreateNoteRequest request,
         NoteDbContext dbContext,
+        IHttpClientFactory httpClientFactory,
         ILogger<Program> logger)
     {
         try
@@ -41,12 +38,17 @@ internal static class CreateNoteEndpoint
             dbContext.Notes.Add(note);
             await dbContext.SaveChangesAsync();
 
+            var tags = await AnalyzeNoteForTags(
+                note: note,
+                httpClientFactory: httpClientFactory,
+                logger: logger);
+
             var response = new CreateNoteResponse(
                 Id: note.Id,
                 Title: note.Title,
                 Content: note.Content,
                 CreatedAtUtc: note.CreatedAtUtc,
-                Tags: []);
+                Tags: tags);
 
             logger.LogInformation(
                 "[CreateNoteEndpoint] Execution completed for request: {@Request}",
@@ -61,6 +63,46 @@ internal static class CreateNoteEndpoint
                 message: "[CreateNoteEndpoint] Failed to create note. Error: {@Message}",
                 ex.Message);
             return Results.Problem("An error occurred while creating the note!");
+        }
+    }
+
+    private static async Task<List<TagResponse>> AnalyzeNoteForTags(
+        Note note,
+        IHttpClientFactory httpClientFactory,
+        ILogger<Program> logger)
+    {
+        try
+        {
+            var analyzedNoteRequest = new AnalyzeNoteRequest(
+                NoteId: note.Id,
+                Title: note.Title,
+                Content: note.Content);
+
+            var client = httpClientFactory.CreateClient("TagsApi");
+            var response = await client.PostAsJsonAsync(
+                requestUri: "tags/analyze",
+                value: analyzedNoteRequest);
+
+            if (response.IsSuccessStatusCode == false)
+            {
+                logger.LogWarning(
+                    "Analyzed response status code does not indicate success. Status Code: {@StatusCode}, Response: {@Response}",
+                    response.StatusCode,
+                    response);
+                return [];
+            }
+
+            var tags = await response.Content.ReadFromJsonAsync<AnalyzeNoteResponse>();
+            return tags?.Tags ?? [];
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(
+                exception: ex,
+                message: "[CreateNoteEndpoint] Failed to analyzed note for tags. Note: {@Note}, Error: {@Message}",
+                note,
+                ex.Message);
+            throw;
         }
     }
 }

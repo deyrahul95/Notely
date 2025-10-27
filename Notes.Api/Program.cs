@@ -10,6 +10,12 @@ builder.Services.AddDbContext<NoteDbContext>(option =>
     option.UseNpgsql(builder.Configuration.GetConnectionString("notely-notes")));
 builder.EnrichNpgsqlDbContext<NoteDbContext>();
 
+builder.Services.AddHttpClient("TagsApi", client =>
+{
+    client.BaseAddress = new Uri("https+http://tags-api");
+    client.Timeout = TimeSpan.FromMinutes(5);
+});
+
 builder.Services.AddOpenApi();
 
 var app = builder.Build();

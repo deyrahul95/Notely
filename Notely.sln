@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notes.Api", "Notes.Api\Note
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tags.Api", "Tags.Api\Tags.Api.csproj", "{2B2EE687-62EB-4E97-9DC2-ADFF7CE0206B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notely.Shared", "Notely.Shared\Notely.Shared.csproj", "{6385C953-3F7A-4C96-8BEE-A0565DCD2E61}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{2B2EE687-62EB-4E97-9DC2-ADFF7CE0206B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B2EE687-62EB-4E97-9DC2-ADFF7CE0206B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B2EE687-62EB-4E97-9DC2-ADFF7CE0206B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6385C953-3F7A-4C96-8BEE-A0565DCD2E61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6385C953-3F7A-4C96-8BEE-A0565DCD2E61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6385C953-3F7A-4C96-8BEE-A0565DCD2E61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6385C953-3F7A-4C96-8BEE-A0565DCD2E61}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
