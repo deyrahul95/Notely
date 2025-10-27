@@ -1,6 +1,13 @@
+using Microsoft.EntityFrameworkCore;
+using Notes.Api.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
+
+builder.Services.AddDbContext<NoteDbContext>(option =>
+    option.UseNpgsql(builder.Configuration.GetConnectionString("notely-notes")));
+builder.EnrichNpgsqlDbContext<NoteDbContext>();
 
 builder.Services.AddOpenApi();
 
@@ -12,6 +19,11 @@ app.MapDefaultEndpoints();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+
+    // Apply EF migrations only in development
+    using var scope = app.Services.CreateScope();
+    var dbContext = scope.ServiceProvider.GetRequiredService<NoteDbContext>();
+    dbContext.Database.Migrate();
 }
 
 app.UseHttpsRedirection();
