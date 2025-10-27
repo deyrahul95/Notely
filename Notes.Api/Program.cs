@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Notes.Api.Data;
+using Notes.Api.Features.CreateNote;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,5 +28,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.MapPost("/notes", CreateNoteEndpoint.Execute);
 
 app.Run();
