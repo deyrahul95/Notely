@@ -35,6 +35,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapPost("/notes", CreateNoteEndpoint.Execute);
+app.MapPost("/notes", CreateNoteEndpoint.Execute).WithTags("Notes");
 
 app.Run();
