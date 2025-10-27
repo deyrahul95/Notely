@@ -23,7 +23,7 @@ if (app.Environment.IsDevelopment())
     // Apply EF migrations only in development
     using var scope = app.Services.CreateScope();
     var dbContext = scope.ServiceProvider.GetRequiredService<NoteDbContext>();
-    dbContext.Database.Migrate();
+    await dbContext.Database.MigrateAsync();
 }
 
 app.UseHttpsRedirection();
