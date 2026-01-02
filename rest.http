@@ -9,3 +9,7 @@ Accept: application/json
     "Title": "AI engineer",
     "Content": "A new role evolving in the software development space!"
 }
+
+### Get Notes
+GET {{BaseAddress}}/notes
+Accept: application/json
