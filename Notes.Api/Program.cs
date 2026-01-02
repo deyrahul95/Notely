@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Notes.Api.Data;
-using Notes.Api.Features.CreateNote;
+using Notes.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,12 +36,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/status", () =>
-{
-    return Results.Ok("Api is healthy!");
-});
-
-app.MapPost("/notes", CreateNoteEndpoint.Execute)
-    .WithTags("Notes");
+app.MapApiEndpoints();
 
 app.Run();

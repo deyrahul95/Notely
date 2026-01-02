@@ -1,9 +1,5 @@
 @BaseAddress=https://localhost:5001
 
-### Check Status
-GET {{BaseAddress}}/status
-Accept: application/json
-
 ### Create Note
 POST {{BaseAddress}}/notes
 Content-Type: application/json
