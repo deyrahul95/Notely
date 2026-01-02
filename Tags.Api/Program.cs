@@ -30,11 +30,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/status", () =>
-{
-    return Results.Ok("Api is healthy!");
-});
-
 app.MapPost("tags/analyze", AnalyzeNoteEndpoint.Execute)
     .WithTags("Tags");
 

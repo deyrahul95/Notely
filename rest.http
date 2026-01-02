@@ -1,4 +1,4 @@
-@BaseAddress=http://localhost:5108
+@BaseAddress=https://localhost:5001
 
 ### Check Status
 GET {{BaseAddress}}/status
