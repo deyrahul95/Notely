@@ -24,11 +24,18 @@ if (app.Environment.IsDevelopment())
     // Apply EF migrations only in development
     using var scope = app.Services.CreateScope();
     var dbContext = scope.ServiceProvider.GetRequiredService<TagDbContext>();
+    await dbContext.Database.EnsureCreatedAsync();
     await dbContext.Database.MigrateAsync();
 }
 
 app.UseHttpsRedirection();
 
-app.MapPost("tags/analyze", AnalyzeNoteEndpoint.Execute).WithTags("Tags");
+app.MapGet("/status", () =>
+{
+    return Results.Ok("Api is healthy!");
+});
+
+app.MapPost("tags/analyze", AnalyzeNoteEndpoint.Execute)
+    .WithTags("Tags");
 
 app.Run();

@@ -30,11 +30,18 @@ if (app.Environment.IsDevelopment())
     // Apply EF migrations only in development
     using var scope = app.Services.CreateScope();
     var dbContext = scope.ServiceProvider.GetRequiredService<NoteDbContext>();
+    await dbContext.Database.EnsureCreatedAsync();
     await dbContext.Database.MigrateAsync();
 }
 
 app.UseHttpsRedirection();
 
-app.MapPost("/notes", CreateNoteEndpoint.Execute).WithTags("Notes");
+app.MapGet("/status", () =>
+{
+    return Results.Ok("Api is healthy!");
+});
+
+app.MapPost("/notes", CreateNoteEndpoint.Execute)
+    .WithTags("Notes");
 
 app.Run();

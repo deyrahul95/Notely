@@ -1,0 +1,15 @@
+@BaseAddress=http://localhost:5108
+
+### Check Status
+GET {{BaseAddress}}/status
+Accept: application/json
+
+### Create Note
+POST {{BaseAddress}}/notes
+Content-Type: application/json
+Accept: application/json
+
+{
+    "Title": "AI engineer",
+    "Content": "A new role evolving in the software development space!"
+}
